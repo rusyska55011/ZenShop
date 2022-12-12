@@ -1,6 +1,6 @@
 from django.db import models
 
-class ClotheGenderType(models.Model):
+class GenderType(models.Model):
     name = models.CharField('Название', max_length=30, unique=True)
 
     def __str__(self):
