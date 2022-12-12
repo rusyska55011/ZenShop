@@ -9,6 +9,7 @@ class GenderType(models.Model):
     class Meta:
         verbose_name = 'Предназначение одежды'
         verbose_name_plural = verbose_name
+        ordering = ('name',)
 
 class ClotheType(models.Model):
     name = models.CharField('Название', max_length=10, unique=True)
