@@ -57,7 +57,7 @@ class SizeType(models.Model):
         unique_together = ('clothe_type', 'name',)
 
     def __str__(self):
-        return f'{self.product} | {self.size}'
+        return f'{self.clothe_type} | {self.name}'
 
     def valid_data(self):
         torso_legs_features_collection = (self.height_from, self.height_to, self.lenght)
