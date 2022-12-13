@@ -124,6 +124,28 @@ class SizeType(models.Model):
         self.valid_height()
         self.valid_data()
 
+class MediaFiles(models.Model):
+    url = models.FileField(f'Файл ({" ".join(allowed_media_extensions)})', upload_to='Clothe')
+    alt = models.CharField('Текст при наведении', max_length=30, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Медиа файлы'
+        verbose_name_plural = verbose_name
+        ordering = ('alt',)
+
+    def __str__(self):
+        if self.alt:
+            return f'{self.url} ALT: {self.alt}'
+        return str(self.url)
+
+    def get_img(self):
+        return mark_safe('<img src="%s" width="100" height="100" />' % self.url.url)
+
+    def clean(self):
+        if not is_valid_media(str(self.url)):
+            raise ValidationError('Файл неподдерживамого формата')
+
+
 class Products(models.Model):
     name = models.CharField('Название', max_length=50)
     clothe_type = models.ForeignKey(ClotheType, on_delete=models.PROTECT, default=0, verbose_name='Вид одежды')
