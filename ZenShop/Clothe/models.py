@@ -49,6 +49,7 @@ class SizeType(models.Model):
 
     palm_circumference = models.SmallIntegerField('Обхват ладони', validators=[MinValueValidator(0)], help_text='Перчатки',
                                                   blank=True, null=True)
+
     class Meta:
         verbose_name = 'Типы размеров'
         verbose_name_plural = verbose_name
@@ -57,6 +58,7 @@ class SizeType(models.Model):
 
     def __str__(self):
         return f'{self.product} | {self.size}'
+
     def valid_data(self):
         torso_legs_features_collection = (self.height_from, self.height_to, self.lenght)
 
@@ -103,5 +105,11 @@ class SizeType(models.Model):
                 elif any(torso_legs_features_collection):
                     raise ValidationError(
                         'Заполнены поля только в группе Торс и Ноги. Выберите поля для Торса или Ног')
+
+    def valid_height(self):
+        if self.height_from > self.height_to:
+            raise ValidationError('Поле "Рост от" не может быть меньше поля "Рост до"')
+
     def clean(self):
+        self.valid_height()
         self.valid_data()
