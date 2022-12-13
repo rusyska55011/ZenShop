@@ -33,21 +33,21 @@ class SizeType(models.Model):
                                            help_text='Торс и ноги. Поля "Рост от" и "Рост до" связаны и будут представлять собой запись, напр. 176-180',
                                            blank=True, null=True)
     height_to = models.SmallIntegerField('Рост до', validators=[MinValueValidator(0)], help_text='Торс и ноги', blank=True, null=True)
-    lenght = models.SmallIntegerField('Длина', validators=[MinValueValidator(0)], help_text='Торс и ноги', blank=True, null=True)
+    lenght = models.FloatField('Длина', validators=[MinValueValidator(0)], help_text='Торс и ноги', blank=True, null=True)
 
-    width = models.SmallIntegerField('Ширина', validators=[MinValueValidator(0)], help_text='Торс', blank=True, null=True)
-    sleeve_lenght = models.SmallIntegerField('Длина рукава', validators=[MinValueValidator(0)], help_text='Торс', blank=True, null=True)
-    bust = models.SmallIntegerField('Обхват груди', validators=[MinValueValidator(0)], help_text='Торс', blank=True, null=True)
+    width = models.FloatField('Ширина', validators=[MinValueValidator(0)], help_text='Торс', blank=True, null=True)
+    sleeve_lenght = models.FloatField('Длина рукава', validators=[MinValueValidator(0)], help_text='Торс', blank=True, null=True)
+    bust = models.FloatField('Обхват груди', validators=[MinValueValidator(0)], help_text='Торс', blank=True, null=True)
 
-    waist = models.SmallIntegerField('Талия', validators=[MinValueValidator(0)], help_text='Ноги', blank=True, null=True)
-    hips = models.SmallIntegerField('Бедра', validators=[MinValueValidator(0)], help_text='Ноги', blank=True, null=True)
+    waist = models.FloatField('Талия', validators=[MinValueValidator(0)], help_text='Ноги', blank=True, null=True)
+    hips = models.FloatField('Бедра', validators=[MinValueValidator(0)], help_text='Ноги', blank=True, null=True)
 
-    head_girth = models.SmallIntegerField('Обхват головы', validators=[MinValueValidator(0)], help_text='Головной убор',
+    head_girth = models.FloatField('Обхват головы', validators=[MinValueValidator(0)], help_text='Головной убор',
                                           blank=True, null=True)
 
     foot_size = models.SmallIntegerField('Длина стопы', validators=[MinValueValidator(0)], help_text='Обувь', blank=True, null=True)
 
-    palm_circumference = models.SmallIntegerField('Обхват ладони', validators=[MinValueValidator(0)], help_text='Перчатки',
+    palm_circumference = models.FloatField('Обхват ладони', validators=[MinValueValidator(0)], help_text='Перчатки',
                                                   blank=True, null=True)
 
     class Meta:
