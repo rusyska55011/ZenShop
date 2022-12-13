@@ -1,5 +1,14 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, ValidationError
+from django.utils.html import mark_safe
+
+
+allowed_media_extensions = ['.mp4', '.png', '.jpg', '.jpeg', '.gif']
+def is_valid_media(url: str):
+    for item in allowed_media_extensions:
+        if url.find(item) + 1:
+            return True
+    return False
 
 
 class GenderType(models.Model):
