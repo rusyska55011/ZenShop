@@ -11,3 +11,4 @@ admin.site.register(ClotheType, HideModel)
 @admin.register(SizeType)
 class SizeTypeAdmin(admin.ModelAdmin):
     list_display = ('clothe_type', 'name', 'rus_measurement_system_name')
+    list_filter = ('clothe_type',)
