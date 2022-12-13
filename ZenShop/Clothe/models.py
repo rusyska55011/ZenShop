@@ -139,7 +139,7 @@ class MediaFiles(models.Model):
         return str(self.url)
 
     def get_img(self):
-        return mark_safe('<img src="%s" width="100" height="100" />' % self.url.url)
+        return mark_safe(f'<img src="{self.url.url}" width="100" height="100" />')
 
     def clean(self):
         if not is_valid_media(str(self.url)):
