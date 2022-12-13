@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GenderType, ClotheType, SizeType, Products
+from .models import GenderType, ClotheType, SizeType, Products, ProductSizeType
 
 class HideModel(admin.ModelAdmin):
     def get_model_perms(self, request):
@@ -18,3 +18,8 @@ class ProductsAdmin(admin.ModelAdmin):
     list_display = ('name', 'clothe_type', 'gender', 'price', 'discount',)
     list_filter = ('clothe_type', 'name',)
     search_fields = ('name', 'description',)
+
+@admin.register(ProductSizeType)
+class ProductsSizeTypeAdmin(admin.ModelAdmin):
+    list_display = ('product', 'size', 'in_stock',)
+    list_filter = ('size',)
