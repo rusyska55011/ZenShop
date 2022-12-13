@@ -25,7 +25,7 @@ class ClotheType(models.Model):
         ordering = ('name',)
 
 class SizeType(models.Model):
-    clothe_type = models.ForeignKey(ClotheType, on_delete=models.SET_NULL, null=True)
+    clothe_type = models.ForeignKey(ClotheType, verbose_name='Вид одежды', on_delete=models.SET_NULL, null=True)
     name = models.CharField('Название', max_length=10)
     rus_measurement_system_name = models.CharField('Российская система измерения', max_length=10, blank=True, null=True)
 
