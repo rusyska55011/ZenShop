@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator, ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator, ValidationError
 
 
 class GenderType(models.Model):
@@ -113,3 +113,26 @@ class SizeType(models.Model):
     def clean(self):
         self.valid_height()
         self.valid_data()
+
+class Products(models.Model):
+    name = models.CharField('Название', max_length=50)
+    clothe_type = models.ForeignKey(ClotheType, verbose_name='Вид одежды', on_delete=models.SET_NULL, null=True)
+    gender = models.ForeignKey(GenderType, verbose_name='Презначение одежды', on_delete=models.SET_NULL, null=True)
+    description = models.CharField('Описание товара', max_length=300, blank=True, null=True)
+    price = models.IntegerField('Цена, руб.', validators=[MinValueValidator(0)])
+    discount = models.SmallIntegerField('Скидка, %', validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Товары'
+        verbose_name_plural = verbose_name
+        ordering = ('clothe_type', 'name', 'price', 'discount',)
+        unique_together = ('name', 'clothe_type',)
+
+    def discount_result(self):
+        return self.price - (self.price / 100) * self.discount
+
+    def __str__(self):
+        if self.discount:
+            return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб. -{self.discount}% ({self.discount_result()} руб.)'
+        else:
+            return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб.'
