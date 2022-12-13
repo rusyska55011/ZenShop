@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GenderType, ClotheType, SizeType, Products, ProductSizeType
+from .models import GenderType, ClotheType, SizeType, Products, ProductSizeType, MediaFiles
 
 class HideModel(admin.ModelAdmin):
     def get_model_perms(self, request):
@@ -23,3 +23,9 @@ class ProductsAdmin(admin.ModelAdmin):
 class ProductsSizeTypeAdmin(admin.ModelAdmin):
     list_display = ('product', 'size', 'in_stock',)
     list_filter = ('size',)
+
+@admin.register(MediaFiles)
+class MediaFilesAdmin(admin.ModelAdmin):
+    list_display = ('get_img', 'alt',)
+    list_filter = ('alt',)
+    readonly_fields = ('get_img',)
