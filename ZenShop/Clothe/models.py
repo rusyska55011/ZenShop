@@ -25,7 +25,7 @@ class ClotheType(models.Model):
         ordering = ('name',)
 
 class SizeType(models.Model):
-    clothe_type = models.ForeignKey(ClotheType, verbose_name='Вид одежды', on_delete=models.SET_NULL, null=True)
+    clothe_type = models.ForeignKey(ClotheType, on_delete=models.PROTECT, verbose_name='Вид одежды')
     name = models.CharField('Название', max_length=10)
     rus_measurement_system_name = models.CharField('Российская система измерения', max_length=10, blank=True, null=True)
 
@@ -117,8 +117,8 @@ class SizeType(models.Model):
 
 class Products(models.Model):
     name = models.CharField('Название', max_length=50)
-    clothe_type = models.ForeignKey(ClotheType, verbose_name='Вид одежды', on_delete=models.SET_NULL, null=True)
-    gender = models.ForeignKey(GenderType, verbose_name='Презначение одежды', on_delete=models.SET_NULL, null=True)
+    clothe_type = models.ForeignKey(ClotheType, on_delete=models.PROTECT, verbose_name='Вид одежды')
+    gender = models.ForeignKey(GenderType, on_delete=models.PROTECT, verbose_name='Презначение одежды')
     description = models.CharField('Описание товара', max_length=300, blank=True, null=True)
     price = models.IntegerField('Цена, руб.', validators=[MinValueValidator(0)])
     discount = models.SmallIntegerField('Скидка, %', validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True, null=True)
@@ -139,8 +139,8 @@ class Products(models.Model):
             return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб.'
 
 class ProductSizeType(models.Model):
-    product = models.ForeignKey(Products, on_delete=models.SET_NULL, verbose_name='Товар', null=True, blank=False)
-    size = models.ForeignKey(SizeType, on_delete=models.SET_NULL, null=True, verbose_name='Размер', blank=False)
+    product = models.ForeignKey(Products, on_delete=models.PROTECT, verbose_name='Товар')
+    size = models.ForeignKey(SizeType, on_delete=models.PROTECT, verbose_name='Размер')
     in_stock = models.SmallIntegerField('В наличии, шт.', default=0)
 
     class Meta:
