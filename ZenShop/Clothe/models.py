@@ -151,6 +151,7 @@ class Products(models.Model):
     clothe_type = models.ForeignKey(ClotheType, on_delete=models.PROTECT, default=0, verbose_name='Вид одежды')
     gender = models.ForeignKey(GenderType, on_delete=models.PROTECT, default=0, verbose_name='Презначение одежды')
     description = models.CharField('Описание товара', max_length=300, blank=True, null=True)
+    photo_video = models.ManyToManyField(MediaFiles, verbose_name=f'Файл ({" ".join(allowed_media_extensions)})')
     price = models.IntegerField('Цена, руб.', validators=[MinValueValidator(0)])
     discount = models.SmallIntegerField('Скидка, %', validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True, null=True)
 
@@ -166,8 +167,7 @@ class Products(models.Model):
     def __str__(self):
         if self.discount:
             return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб. -{self.discount}% ({self.discount_result()} руб.)'
-        else:
-            return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб.'
+        return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб.'
 
 class ProductSizeType(models.Model):
     product = models.ForeignKey(Products, on_delete=models.PROTECT, default=0, verbose_name='Товар')
