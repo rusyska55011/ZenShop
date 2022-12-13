@@ -107,8 +107,9 @@ class SizeType(models.Model):
                         'Заполнены поля только в группе Торс и Ноги. Выберите поля для Торса или Ног')
 
     def valid_height(self):
-        if self.height_from > self.height_to:
-            raise ValidationError('Поле "Рост от" не может быть меньше поля "Рост до"')
+        if all([self.height_from, self.height_to]):
+            if self.height_from > self.height_to:
+                raise ValidationError('Поле "Рост от" не может быть меньше поля "Рост до"')
 
     def clean(self):
         self.valid_height()
