@@ -137,3 +137,25 @@ class Products(models.Model):
             return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб. -{self.discount}% ({self.discount_result()} руб.)'
         else:
             return f'{self.name} | {self.clothe_type} | {self.gender} | {self.price} руб.'
+
+class ProductSizeType(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.SET_NULL, verbose_name='Товар', null=True, blank=False)
+    size = models.ForeignKey(SizeType, on_delete=models.SET_NULL, null=True, verbose_name='Размер', blank=False)
+    in_stock = models.SmallIntegerField('В наличии, шт.', default=0)
+
+    class Meta:
+        verbose_name = 'Товары и Размеры'
+        verbose_name_plural = verbose_name
+        ordering = ('product', 'size',)
+        unique_together = ('product', 'size',)
+
+    def __str__(self):
+        return f'{self.product} | {self.size}'
+
+    def clean(self):
+        product_clothe_type = self.product.clothe_type
+        size_clothe_type = self.size.clothe_type
+
+        if not(product_clothe_type.pk == size_clothe_type.pk):
+            raise ValidationError(f'{self.product} относится к размерам для {product_clothe_type} \
+                                    и может не относиться к размеру для {size_clothe_type}')
