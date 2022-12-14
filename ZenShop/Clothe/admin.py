@@ -26,6 +26,6 @@ class ProductsSizeTypeAdmin(admin.ModelAdmin):
 
 @admin.register(MediaFiles)
 class MediaFilesAdmin(admin.ModelAdmin):
-    list_display = ('get_img', 'alt',)
+    list_display = ('get_img', 'url', 'alt',)
     list_filter = ('alt',)
     readonly_fields = ('get_img',)
