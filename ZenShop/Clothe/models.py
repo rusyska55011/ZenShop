@@ -140,7 +140,16 @@ class MediaFiles(models.Model):
         return str(self.url)
 
     def get_img(self):
-        return mark_safe(f'<img src="{self.url.url}" width="100" height="100" />')
+        is_valid, media_extention = is_valid_media(str(self.url))
+
+        if media_extention in allowed_photo_extensions:
+            return mark_safe(f'''<img src="{self.url.url}" width="200" height="200" />''')
+        elif media_extention in alloved_video_extensions:
+            return mark_safe(f'''
+                <video width="200" height="200" controls="controls">
+                        <source src="{self.url.url}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                </video>
+            ''')
 
     def clean(self):
         is_valid, media_extention = is_valid_media(str(self.url))
