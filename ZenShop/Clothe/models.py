@@ -3,12 +3,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator, Validat
 from django.utils.html import mark_safe
 
 
-allowed_media_extensions = ['.mp4', '.png', '.jpg', '.jpeg', '.gif']
+allowed_photo_extensions = ['.png', '.jpg', '.jpeg', '.gif']
+alloved_video_extensions = ['.mp4',]
 def is_valid_media(url: str):
-    for item in allowed_media_extensions:
+    for item in allowed_photo_extensions + alloved_video_extensions:
         if url.find(item) + 1:
-            return True
-    return False
+            return True, item
+    return False, 'null'
 
 
 class GenderType(models.Model):
@@ -125,7 +126,7 @@ class SizeType(models.Model):
         self.valid_data()
 
 class MediaFiles(models.Model):
-    url = models.FileField(f'Файл ({" ".join(allowed_media_extensions)})', upload_to='Clothe')
+    url = models.FileField(f'Файл ({" ".join(alloved_video_extensions + allowed_photo_extensions)})', upload_to='Clothe')
     alt = models.CharField('Текст при наведении', max_length=30, blank=True, null=True)
 
     class Meta:
@@ -142,7 +143,8 @@ class MediaFiles(models.Model):
         return mark_safe(f'<img src="{self.url.url}" width="100" height="100" />')
 
     def clean(self):
-        if not is_valid_media(str(self.url)):
+        is_valid, media_extention = is_valid_media(str(self.url))
+        if not is_valid:
             raise ValidationError('Файл неподдерживамого формата')
 
 
@@ -151,7 +153,7 @@ class Products(models.Model):
     clothe_type = models.ForeignKey(ClotheType, on_delete=models.PROTECT, default=0, verbose_name='Вид одежды')
     gender = models.ForeignKey(GenderType, on_delete=models.PROTECT, default=0, verbose_name='Презначение одежды')
     description = models.CharField('Описание товара', max_length=300, blank=True, null=True)
-    photo_video = models.ManyToManyField(MediaFiles, verbose_name=f'Файл ({" ".join(allowed_media_extensions)})')
+    photo_video = models.ManyToManyField(MediaFiles, verbose_name=f'Файл ({" ".join(alloved_video_extensions + allowed_photo_extensions)})')
     price = models.IntegerField('Цена, руб.', validators=[MinValueValidator(0)])
     discount = models.SmallIntegerField('Скидка, %', validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True, null=True)
 
