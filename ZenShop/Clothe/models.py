@@ -1,3 +1,5 @@
+# TODO: Убрать аргументы (null=True, blank=True) в MediaFiles.url
+
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, ValidationError
 from django.utils.html import mark_safe
@@ -126,7 +128,7 @@ class SizeType(models.Model):
         self.valid_data()
 
 class MediaFiles(models.Model):
-    url = models.FileField(f'Файл ({" ".join(alloved_video_extensions + allowed_photo_extensions)})', upload_to='Clothe')
+    url = models.FileField(f'Файл ({" ".join(alloved_video_extensions + allowed_photo_extensions)})', upload_to='Clothe', null=True, blank=True)
     alt = models.CharField('Текст при наведении', max_length=30, blank=True, null=True)
 
     class Meta:
