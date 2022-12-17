@@ -4,7 +4,7 @@ from .models import DiliveryType, DiliveryPlace, Orders
 def get_products_in_order(obj):
     products_name_size_string_collection = [f'{product.product.name} ({product.size.name})' for product in
                                             obj.products.all()]
-    return f'{len(products_name_size_string_collection)} товара: ' + ' ; '.join(products_name_size_string_collection)
+    return len(products_name_size_string_collection), products_name_size_string_collection
 
 @admin.register(DiliveryType)
 class DiliveryTypeAdmin(admin.ModelAdmin):
@@ -21,7 +21,8 @@ class DiliveryPlaceAdmin(admin.ModelAdmin):
 @admin.register(Orders)
 class OrdersAdmin(admin.ModelAdmin):
     def products_in_order(self, obj):
-        return get_products_in_order(obj)
+        products_value, products = get_products_in_order(obj)
+        return f'{products_value} товара: ' + ' ; '.join(products)
 
     def order_number(self, obj):
         return f'Заказ №{obj.pk}'
