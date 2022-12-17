@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import DiliveryType, DiliveryPlace, Orders
 
-def get_products_in_order(obj):
+def get_products_in_order(obj: Orders.products) -> (int, list):
     products_name_size_string_collection = [f'{product.product.name} ({product.size.name})' for product in
                                             obj.products.all()]
     return len(products_name_size_string_collection), products_name_size_string_collection
