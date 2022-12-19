@@ -20,10 +20,12 @@ class DiliveryPlaceAdmin(admin.ModelAdmin):
 
 @admin.register(Orders)
 class OrdersAdmin(admin.ModelAdmin):
+    @admin.display(description='Товары в заказе')
     def products_in_order(self, obj):
-        products_value, products = get_products_in_order(obj)
-        return f'{products_value} товара: ' + ' ; '.join(products)
+        value, items = get_products_in_order(obj)
+        return f'{value} товара: ' + ' ; '.join(items)
 
+    @admin.display(description='Номер заказа')
     def order_number(self, obj):
         return f'Заказ №{obj.pk}'
 

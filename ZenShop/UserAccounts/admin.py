@@ -4,6 +4,7 @@ from .models import UserAccounts
 @admin.register(UserAccounts)
 class UserAccountsAdmin(admin.ModelAdmin):
 
+    @admin.display(description='Число всех заказов')
     def orders_value_history(self, obj):
         return len(obj.order_history.all())
 
