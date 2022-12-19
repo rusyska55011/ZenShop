@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from Orders.admin import get_products_in_order
-from .models import Cart, CartOfSessions
+from .models import Cart, CartOfSessions, CartForAccounts
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
@@ -30,4 +30,23 @@ class CartOfSessionsAdmin(admin.ModelAdmin):
     def get_cart_number(self, obj):
         return f'Корзина №{obj.cart.pk}'
 
-    list_display = ('get_cart_number', 'session', 'get_date', 'get_products')
+    list_display = ('get_cart_number', 'session', 'get_date', 'get_products',)
+    readonly_fields = ('session', 'cart',)
+
+@admin.register(CartForAccounts)
+class CartForAccountsAdmin(admin.ModelAdmin):
+    @admin.display(description='Дата создания')
+    def get_date(self, obj):
+        return obj.cart.order_datetime
+
+    @admin.display(description='Товары в корзине')
+    def get_products(self, obj):
+        value, items = get_products_in_order(obj.cart)
+        return items
+
+    @admin.display(description='Номер корзины (таблицы "Корзины")')
+    def get_cart_number(self, obj):
+        return f'Корзина №{obj.cart.pk}'
+
+    list_display = ('get_cart_number', 'account', 'get_date', 'get_products',)
+    readonly_fields = ('account', 'cart',)
